@@ -1,5 +1,8 @@
 #!/bin/bash
-set -e
+set -ex
+
+mkdir -p /run/postgresql
+chmod ugo+rwx /run/postgresql
 
 set_listen_addresses() {
 	sedEscapedValue="$(echo "$1" | sed 's/[\/&]/\\&/g')"

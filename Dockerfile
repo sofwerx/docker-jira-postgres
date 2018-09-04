@@ -1,13 +1,21 @@
-FROM blacklabelops/alpine:3.4
-MAINTAINER Steffen Bleul <sbl@blacklabelops.com>
+FROM alpine:3.7
 
-# Build time arguments
-# Values: latest or version number (e.g. 9.4.6-r0)
 ARG POSTGRES_VERSION=latest
+ENV POSTGRES_VERSION=$POSTGRES_VERSION
 
-RUN apk add --update \
-      curl \
-      gpgme && \
+RUN apk upgrade --update && \
+    apk add \
+      bash \
+      tzdata \
+      vim \
+      tini \
+      su-exec \
+      gzip \
+      tar \
+      wget \
+      gpgme \
+      curl && \
+    echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf && \
     if  [ "${POSTGRES_VERSION}" = "latest" ]; \
       then apk add postgresql ; \
       else apk add "postgresql=${POSTGRES_VERSION}" ; \
